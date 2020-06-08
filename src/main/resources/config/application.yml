@@ -71,6 +71,14 @@ spring:
     jpa:
       repositories:
         bootstrap-mode: deferred
+  datasource:
+    hikari:
+      username: postgres
+      password: postgres
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/knowledge}
+    name: pgConnection
+    #username: postgres
+    #password: postgres
   jpa:
     open-in-view: false
     properties:

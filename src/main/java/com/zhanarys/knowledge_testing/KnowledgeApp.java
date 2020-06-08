@@ -13,12 +13,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.context.request.async.DeferredResult;
 
 import javax.annotation.PostConstruct;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.ForkJoinPool;
 
 @SpringBootApplication
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
@@ -95,4 +100,28 @@ public class KnowledgeApp {
             contextPath,
             env.getActiveProfiles());
     }
+
+
+
+
+    @GetMapping("/test")
+    public DeferredResult<ResponseEntity<?>> handleReqDefResult(Model model) {
+        log.info("Received async-deferredresult request");
+        DeferredResult<ResponseEntity<?>> output = new DeferredResult<>();
+
+        ForkJoinPool.commonPool().submit(() -> {
+            log.info("Processing in separate thread");
+            try {
+                Thread.sleep(6000);
+            } catch (InterruptedException e) {
+            }
+            output.setResult(ResponseEntity.ok("ok"));
+        });
+
+        //LOG.info("servlet thread freed");
+        return output;
+    }
+
+
+
 }

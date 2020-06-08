@@ -11,6 +11,9 @@ import { clearAuthentication } from './shared/reducers/authentication';
 import ErrorBoundary from './shared/error/error-boundary';
 import AppComponent from './app';
 import { loadIcons } from './config/icon-loader';
+import Counters from './components/counters'
+import Movies from './components/movies'
+import Demoapp from "app/components/demoapp";
 
 const devTools = process.env.NODE_ENV === 'development' ? <DevTools /> : null;
 
